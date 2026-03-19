@@ -83,6 +83,14 @@ const cars = [
     feul: "3L/h",
     price: 150,
   },
+  {
+    id: 4,
+    status: true,
+    src: "/car/car-4.jpg",
+    speed: "170km/h",
+    feul: "2L/h",
+    price: 199,
+  },
 ];
 
 export function CarRental() {
@@ -120,6 +128,7 @@ export function CarRental() {
 }
 
 function Cars({ carsList, isOpen, onSetIsOpen, onSetChoosenCar, choosenCar }) {
+  const [carVisible, setCarVisible] = useState(0);
   function handleCarDetails(index) {
     const selectedCar = carsList.filter((_, i) => {
       return index === i;
@@ -131,8 +140,8 @@ function Cars({ carsList, isOpen, onSetIsOpen, onSetChoosenCar, choosenCar }) {
   }
   return (
     <>
-      <div className="flex flex-wrap gap-4 justify-center mx-auto w-[80%] text-white text-sm p-4 ">
-        {carsList.map((car, index) => {
+      <div className="grid grid-cols-2 grid-rows-1 gap-4 justify-center mx-auto w-[80%] text-white text-sm p-4 ">
+        {carsList.slice(carVisible, carVisible + 2).map((car, index) => {
           return (
             <div
               key={index}
@@ -168,6 +177,14 @@ function Cars({ carsList, isOpen, onSetIsOpen, onSetChoosenCar, choosenCar }) {
             </div>
           );
         })}
+        {carsList.length > carVisible && (
+          <button
+            className=""
+            onClick={() => setCarVisible((carVisible + 1) % carsList.length)}
+          >
+            veiw more
+          </button>
+        )}
       </div>
 
       <Form
