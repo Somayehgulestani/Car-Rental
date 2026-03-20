@@ -1,5 +1,13 @@
 import { differenceInCalendarDays } from "date-fns";
-
+import {
+  FaCar,
+  FaUser,
+  FaTachometerAlt,
+  FaTelegram,
+  FaPhone,
+  FaEnvelope,
+  FaCalendar,
+} from "react-icons/fa";
 import { useState } from "react";
 
 const cars = [
@@ -83,14 +91,6 @@ const cars = [
     feul: "3L/h",
     price: 150,
   },
-  {
-    id: 4,
-    status: true,
-    src: "/car/car-4.jpg",
-    speed: "170km/h",
-    feul: "2L/h",
-    price: 199,
-  },
 ];
 
 export function CarRental() {
@@ -123,12 +123,15 @@ export function CarRental() {
         />
       )}
       <RentalBox RentalList={RentalList} />
+      <FactsInNumber />
+      <CustomersReview />
+      <Footer />
     </>
   );
 }
 
 function Cars({ carsList, isOpen, onSetIsOpen, onSetChoosenCar, choosenCar }) {
-  const [carVisible, setCarVisible] = useState(0);
+  // const [carVisible, setCarVisible] = useState(0);
   function handleCarDetails(index) {
     const selectedCar = carsList.filter((_, i) => {
       return index === i;
@@ -140,8 +143,11 @@ function Cars({ carsList, isOpen, onSetIsOpen, onSetChoosenCar, choosenCar }) {
   }
   return (
     <>
-      <div className="grid grid-cols-2 grid-rows-1 gap-4 justify-center mx-auto w-[80%] text-white text-sm p-4 ">
-        {carsList.slice(carVisible, carVisible + 2).map((car, index) => {
+      <h2 className="text-center text-white font-bold text-4xl m-5 font-mono  tracking-tighter ">
+        Choose The Car That Suits You{" "}
+      </h2>
+      <div className="flex flex-wrap gap-4 justify-center mx-auto w-[80%] text-white text-sm p-4 ">
+        {carsList.map((car, index) => {
           return (
             <div
               key={index}
@@ -177,14 +183,14 @@ function Cars({ carsList, isOpen, onSetIsOpen, onSetChoosenCar, choosenCar }) {
             </div>
           );
         })}
-        {carsList.length > carVisible && (
+        {/* {carsList.length > carVisible && (
           <button
             className=""
             onClick={() => setCarVisible((carVisible + 1) % carsList.length)}
           >
             veiw more
           </button>
-        )}
+        )} */}
       </div>
 
       <Form
@@ -391,6 +397,138 @@ function HeroSection() {
         Enhance The Pleasure Of Your Trip With A{" "}
         <em className="underline decoration-stone-100">FAST</em> Car
       </h2>
+    </div>
+  );
+}
+
+function FactsInNumber() {
+  return (
+    <div className="bg-slate-300 w-3/4 rounded-lg p-5 mx-auto m-5">
+      <h2 className="font-bold text-2xl text-center mb-3">FACTS IN NUMBERS</h2>
+      <p className="font-semibold text-base text-center">
+        We provide high-quality vehicales with the best service for your journey
+        (●'◡'●)
+      </p>
+      <div className="flex flex-wrap m-10 gap-3 text-white">
+        <div className="factNumberBox">
+          <FaCar size={30} />
+          <p className="text-xl">
+            110+ <span className="block text-sm font-normal">Cars</span>
+          </p>
+        </div>
+        <div className="factNumberBox">
+          <FaUser size={30} />
+          <p className="text-xl">
+            11k+ <span className="block text-sm font-normal">Customers</span>
+          </p>
+        </div>
+        <div className="factNumberBox ">
+          <FaTachometerAlt size={30} />
+          <p className="text-xl">
+            10m+ <span className="block text-sm font-normal"> Miles</span>
+          </p>
+        </div>
+        <div className="factNumberBox ">
+          <FaCalendar size={30} />
+          <p className="text-xl">
+            10+ <span className="block text-sm font-normal">Years</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CustomersReview() {
+  return (
+    <div className="bg-zinc-400 mt-16 mb-16  pt-12 pb-16 pl-5 pr-5 ">
+      <h3 className="text-3xl font-extrabold font-mono tracking-tighter text-center mb-10 ">
+        Reviews From Our Customers
+      </h3>
+
+      <div className="flex flex-wrap gap-4 justify-center ">
+        <div className="bg-zinc-200 w-[350px] rounded-lg ">
+          <span className="block mt-3 ml-3 text-3xl font-bold">⁗</span>
+          <p className="m-3 font-medium">
+            I had an amazing experience!The car was clean, confortable, and
+            exactly as described. The booking process was fast and easy.
+          </p>
+          <div className="bg-zinc-700 text-white rounded-b-lg flex p-2">
+            <img
+              className="w-[70px] h-[70px] object-center rounded-full my-auto mr-3"
+              src="/img/img4.jpg"
+            ></img>
+            <h3 className="my-auto">
+              Ahmad<p className="text-sm text-gray-300">spain</p>
+            </h3>
+          </div>
+        </div>
+        <div className="bg-zinc-200 w-[350px] rounded-lg ">
+          <span className="block mt-3 ml-3 text-3xl font-bold">⁗</span>
+          <p className="m-3  font-medium">
+            Great service and very friendly staff. The car was delivered on
+            time, amd everything went smoothy. Highly recommended!
+          </p>
+          <div
+            className="bg-zinc-700 text-white rounded-b-lg flex p-2 
+        
+        "
+          >
+            <img
+              className="w-[70px] h-[70px] object-center rounded-full my-auto mr-3 "
+              src="/img/img5.jpg"
+            ></img>
+            <h3 className="my-auto">
+              Ali<p className="text-sm text-gray-300">Canada</p>
+            </h3>
+          </div>
+        </div>
+
+        <div className="bg-zinc-200 w-[350px] rounded-lg ">
+          <span className="block mt-3 ml-3 text-3xl font-bold">⁗</span>
+          <p className="m-3 font-medium">
+            Afforable prices with excellent quality. I've used their service
+            multiple times and never had any issues.
+          </p>
+          <div
+            className="bg-zinc-700 text-white rounded-b-lg 
+          flex p-2 
+        "
+          >
+            <img
+              className="w-[70px] h-[70px] object-center rounded-full my-auto mr-3"
+              src="/img/img6.jpg"
+            ></img>
+            <h3 className="my-auto ">
+              {" "}
+              Sara
+              <p className="text-sm text-gray-300">USA</p>
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Footer() {
+  return (
+    <div className="bg-black/80 text-white flex justify-between p-4">
+      <i className="text-3xl font-bold mr-5">⌁FAST</i>
+      <div className="flex gap-3 flex-wrap">
+        <div className="flex gap-2">
+          <FaEnvelope />
+          <h3>zero@gmail.com</h3>
+        </div>
+        <div className="flex gap-2">
+          <FaPhone />
+          <h3>0988786432</h3>
+        </div>
+        <div className="flex gap-2">
+          <FaTelegram />
+          <h3>@fast-11</h3>
+        </div>
+      </div>
     </div>
   );
 }
