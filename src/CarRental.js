@@ -98,13 +98,14 @@ export function CarRental() {
   const [isOpen, setIsOpen] = useState(false);
   const [choosenCar, setChoosenCar] = useState([]);
   const [RentalList, setRentalList] = useState([]);
-  console.log(RentalList);
-
-  console.log(choosenCar);
+  const [showRentalBox, setShowRentalBox] = useState(false);
 
   return (
     <>
-      <HeroSection />
+      <HeroSection
+        showRentalBox={showRentalBox}
+        onSetShowRentalBox={setShowRentalBox}
+      />
 
       <Cars
         isOpen={isOpen}
@@ -122,7 +123,9 @@ export function CarRental() {
           onSetRentalList={setRentalList}
         />
       )}
-      <RentalBox RentalList={RentalList} />
+      {showRentalBox && (
+        <RentalBox RentalList={RentalList} showRentalBox={showRentalBox} />
+      )}
       <FactsInNumber />
       <CustomersReview />
       <Footer />
@@ -169,7 +172,7 @@ function Cars({ carsList, isOpen, onSetIsOpen, onSetChoosenCar, choosenCar }) {
                 </h2>
                 {car.status ? (
                   <button
-                    className="p-2  bg-white text-black rounded-2xl font-semibold mt-3 hover:bg-slate-300 hover:scale-90"
+                    className="p-2  bg-white text-black rounded-2xl font-semibold mt-3 hover:bg-slate-300 hover:scale-90 w-full"
                     onClick={() => handleCarDetails(index)}
                   >
                     Click for Details
@@ -348,31 +351,55 @@ function Form({
   );
 }
 
-function RentalBox({ RentalList }) {
-  return (
-    RentalList.length > 0 && (
-      <div className="absolute h-screen w-1/5 bg-white  top-0 right-0 shadow-lg">
-        {RentalList.map((items) => {
-          console.log(items.startDate);
+function RentalBox({ RentalList, showRentalBox }) {
+  return RentalBox.length > 0 ? (
+    <div className="absolute h-screen w-[350px] bg-white  top-0 right-0 shadow-lg">
+      {RentalList.map((items) => {
+        console.log(items.startDate);
 
-          return (
-            <div>
-              <img src={items.src}></img>
-              <div>
-                <h2>number:{items.number}</h2>
-                <h2>Start Date: {items.startDate}</h2>
-                <h2>End Date: {items.endDate}</h2>
-                <h2>Days:{items.days}</h2>
-                <h2>Total Rent: ${items.days * items.price}</h2>
+        return (
+          <>
+            <p className=" m-3 cursor-pointer text-center text-xl bg-red-500 rounded-md text-white font-bold p-1 w-9 ml-auto ">
+              ✕
+            </p>
+            <div className="shadow-lg m-3">
+              <img className="h-[400px] mx-auto" src={items.src}></img>
+              <div className="pl-5 font-bold ">
+                <h4>
+                  Your Name:{" "}
+                  <span className="font-normal ">{items.renterName}</span>
+                </h4>
+                <h4>
+                  Your Number:{" "}
+                  <span className="font-normal">{items.number}</span>
+                </h4>
+                <h4>
+                  Start Date:{" "}
+                  <span className="font-normal">{items.startDate}</span>{" "}
+                </h4>
+                <h4>
+                  End Date: <span className="font-normal">{items.endDate}</span>
+                </h4>
+                <h4>
+                  Days: <span className="font-normal">{items.days}</span>
+                </h4>
+                <h4>
+                  Total Rent:{" "}
+                  <span className="font-normal">
+                    ${items.days * items.price}
+                  </span>
+                </h4>
               </div>
             </div>
-          );
-        })}
-      </div>
-    )
+          </>
+        );
+      })}
+    </div>
+  ) : (
+    <p>You Did Not Have Any Choice!</p>
   );
 }
-function HeroSection() {
+function HeroSection({ showRentalBox, onSetShowRentalBox }) {
   return (
     <div className="relative ">
       <div className="absolute  inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
@@ -389,7 +416,10 @@ function HeroSection() {
         <h1 className=" font-extrabold lg:text-6xl text-5xl xl:text-6xl font-mono text-stone-700  ">
           FAST Rental CAR
         </h1>
-        <button className=" pr-3 pl-3  rounded-3xl border-black border ">
+        <button
+          className=" pr-3 pl-3  rounded-3xl border-black border "
+          onClick={() => onSetShowRentalBox(!showRentalBox)}
+        >
           Your Car
         </button>
       </div>
