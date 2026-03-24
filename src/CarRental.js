@@ -124,7 +124,12 @@ export function CarRental() {
         />
       )}
       {showRentalBox && (
-        <RentalBox RentalList={RentalList} showRentalBox={showRentalBox} />
+        <RentalBox
+          onSetRentalList={setRentalList}
+          RentalList={RentalList}
+          showRentalBox={showRentalBox}
+          onSetShowRentalBox={setShowRentalBox}
+        />
       )}
       <FactsInNumber />
       <CustomersReview />
@@ -214,7 +219,7 @@ function CarDetails({
 }) {
   const [show, setShow] = useState(false);
   return (
-    <div className="lg:w-[40%] lg:left-1/3 w-2/3  bg-stone-300 top-1/4  left-[18%] bg-opacity-95 rounded-xl fixed">
+    <div className="lg:w-[40%] lg:left-1/3 w-3/4  bg-stone-400 top-1/4  left-[18%] bg-opacity-95 rounded-xl fixed">
       {choosenCar.map((car, index) => {
         return (
           <div
@@ -285,6 +290,7 @@ function Form({
   const [number, setNumber] = useState("");
   const [startDate, setstartDate] = useState(newDate);
   const [endDate, setEndDate] = useState(tomorrowDate);
+  console.log(choosenCar);
 
   function handleSAveData(e) {
     e.preventDefault();
@@ -297,17 +303,27 @@ function Form({
         startDate !== undefined &&
         endDate !== undefined
       ) {
-        onSetChoosenCar([
-          {
-            ...items,
-            renterName: name,
-            number: number,
-            startDate: startDate,
-            endDate: endDate,
-            days: days,
-          },
-        ]);
+        const newItem = {
+          ...items,
+          renterName: name,
+          number: number,
+          startDate: startDate,
+          endDate: endDate,
+          days: days,
+        };
+        const updateList = [...choosenCar, newItem];
+        // onSetChoosenCar([
+        //   {
+        //     ...items,
+        //     renterName: name,
+        //     number: number,
+        //     startDate: startDate,
+        //     endDate: endDate,
+        //     days: days,
+        //   },
+        // ]);
         onSetShow(!show);
+        onSetChoosenCar(updateList);
         onSetRentalList(choosenCar);
       }
     });
@@ -316,7 +332,7 @@ function Form({
 
   return (
     <div
-      className=" bg-stone-400 w-[50%]  mx-auto text-stone-800 font-semibold m-5 my-10"
+      className=" bg-zinc-300 w-[50%]  mx-auto text-stone-800 font-semibold m-5 my-10 "
       style={{ display: show ? "block" : "none" }}
     >
       <form className="flex flex-col p-4 ">
@@ -351,52 +367,77 @@ function Form({
   );
 }
 
-function RentalBox({ RentalList, showRentalBox }) {
-  return RentalBox.length > 0 ? (
-    <div className="absolute h-screen w-[350px] bg-white  top-0 right-0 shadow-lg">
-      {RentalList.map((items) => {
-        console.log(items.startDate);
+function RentalBox({
+  onSetRentalList,
+  RentalList,
+  showRentalBox,
+  onSetShowRentalBox,
+}) {
+  function handleCancelRental(index) {
+    onSetRentalList(RentalList.filter((_, i) => index !== i));
+  }
 
-        return (
-          <>
-            <p className=" m-3 cursor-pointer text-center text-xl bg-red-500 rounded-md text-white font-bold p-1 w-9 ml-auto ">
-              ✕
-            </p>
-            <div className="shadow-lg m-3">
-              <img className="h-[400px] mx-auto" src={items.src}></img>
-              <div className="pl-5 font-bold ">
-                <h4>
-                  Your Name:{" "}
-                  <span className="font-normal ">{items.renterName}</span>
-                </h4>
-                <h4>
-                  Your Number:{" "}
-                  <span className="font-normal">{items.number}</span>
-                </h4>
-                <h4>
-                  Start Date:{" "}
-                  <span className="font-normal">{items.startDate}</span>{" "}
-                </h4>
-                <h4>
-                  End Date: <span className="font-normal">{items.endDate}</span>
-                </h4>
-                <h4>
-                  Days: <span className="font-normal">{items.days}</span>
-                </h4>
-                <h4>
-                  Total Rent:{" "}
-                  <span className="font-normal">
-                    ${items.days * items.price}
-                  </span>
-                </h4>
-              </div>
-            </div>
-          </>
-        );
-      })}
-    </div>
-  ) : (
-    <p>You Did Not Have Any Choice!</p>
+  return (
+    showRentalBox && (
+      <div className="absolute h-screen w-[350px] bg-white  top-0 right-0 shadow-lg">
+        <p
+          className=" m-3 cursor-pointer text-center text-xl bg-red-500 rounded-md text-white font-bold p-1 w-9 ml-auto "
+          onClick={() => onSetShowRentalBox(!showRentalBox)}
+        >
+          ✕
+        </p>
+        {RentalList.length > 0 ? (
+          RentalList.map((items, index) => {
+            return (
+              <>
+                <div className="shadow-lg m-3 flex flex-col">
+                  <img className="h-[400px] mx-auto" src={items.src}></img>
+                  <div className="pl-5 font-bold ">
+                    <h4>
+                      Your Name:{" "}
+                      <span className="font-normal ">{items.renterName}</span>
+                    </h4>
+                    <h4>
+                      Your Number:{" "}
+                      <span className="font-normal">{items.number}</span>
+                    </h4>
+                    <h4>
+                      Start Date:{" "}
+                      <span className="font-normal">
+                        {items.startDate}
+                      </span>{" "}
+                    </h4>
+                    <h4>
+                      End Date:{" "}
+                      <span className="font-normal">{items.endDate}</span>
+                    </h4>
+                    <h4>
+                      Days: <span className="font-normal">{items.days}</span>
+                    </h4>
+                    <h4>
+                      Total Rent:{" "}
+                      <span className="font-normal">
+                        ${items.days * items.price}
+                      </span>
+                    </h4>
+                  </div>
+                  <button
+                    className="bg-stone-500 text-white text-sm font-medium p-2 rounded-md m-2  ml-1/2"
+                    onClick={() => handleCancelRental(index)}
+                  >
+                    Cancel Rental{" "}
+                  </button>
+                </div>
+              </>
+            );
+          })
+        ) : (
+          <p className="text-center font-semibold text-xl ">
+            You Did Not Have Any Choice!
+          </p>
+        )}
+      </div>
+    )
   );
 }
 function HeroSection({ showRentalBox, onSetShowRentalBox }) {
